@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: true
+  vars:
+      home: /home/vagrant
+      document_root: /vagrant
+      go_path: /vagrant
+  pre_tasks:
+      - name: Update apt cache
+        apt:
+          update_cache=yes
+          cache_valid_time=7200
+      - name: Install required packages
+        apt: name={{ item }} state=installed
+        with_items:
+         - python
+         - git
+         - tig
+         - tree
+         - htop
+         - tmux
+         - exuberant-ctags
+         - man-db
+  roles:
+      - { role: dotfiles, become: false }
+      - { role: vim, become: false }
+      - { role: youcompleteme, become: false }
